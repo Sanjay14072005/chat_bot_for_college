@@ -1,0 +1,8 @@
+pandas
+numpy
+scikit-learn
+sentence-transformers
+torch
+transformers
+gradio
+huggingface_hub
