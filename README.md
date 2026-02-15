@@ -1,29 +1,147 @@
-# chat_bot_for_college
+# 🎓 College RAG Chatbot
+### *LLaMA-3 + Category-Aware Retrieval*
 
-## Semantic search for preprocessed RAG chunks
+A Retrieval-Augmented Generation (RAG) chatbot built using **Meta LLaMA-3-8B-Instruct**, **SentenceTransformers**, and **Gradio**, designed to answer institutional queries using structured academic data.
 
-This repository contains precomputed chunk embeddings in:
+---
 
-- `dataset/formated_chunks_and_embedding.csv`
+## 🚀 Project Overview
 
-Use `rag_pipeline/semantic_search.py` to run cosine-similarity search on that file.
+This project implements a **category-aware RAG pipeline** for answering questions related to a college or institution.
 
-### Option 1: search with text query (OpenAI embeddings)
+The system:
+- Loads precomputed text embeddings from a CSV file
+- Computes category centroids for efficient semantic filtering
+- Selects top relevant categories using cosine similarity
+- Performs fine-grained chunk retrieval inside selected categories
+- Injects retrieved context into a structured prompt
+- Generates answers using Meta-LLaMA-3-8B-Instruct
+- Serves responses through a Gradio chat interface
 
+---
+
+## 🧠 Architecture
+
+### 🔎 Retrieval Layer
+- **Embedding model:** `all-mpnet-base-v2`
+- Category-level centroid similarity filtering
+- Chunk-level cosine similarity scoring
+- Top-*k* results per category
+
+### 🤖 Generation Layer
+- **Model:** `meta-llama/Meta-Llama-3-8B-Instruct`
+- Prompt includes:
+  - System instruction
+  - Conversation history
+  - Retrieved contextual chunks
+  - User query
+
+### 💬 Interface
+- **Gradio ChatInterface**
+- Multi-turn conversational memory
+- Context-aware responses
+
+---
+
+## 📂 Dataset
+
+The system expects a CSV file containing:
+
+| text | embedding | category | department | source |
+|------|-----------|----------|------------|--------|
+
+> ⚠️ **Note:** The real institutional dataset is private and not included in this repository.
+
+---
+
+## ⚙️ Installation
+
+### 1️⃣ Clone the repository
 ```bash
-export OPENAI_API_KEY="your_key"
-python rag_pipeline/semantic_search.py --query "What scholarships are available for first-year students?" --top-k 5
+git clone https://github.com/<your-username>/chat_bot_for_college.git
+cd chat_bot_for_college
 ```
 
-### Option 2: search with a precomputed query embedding
-
+### 2️⃣ Install dependencies
 ```bash
-python rag_pipeline/semantic_search.py --query-embedding "[0.1, 0.2, ...]" --top-k 5
+pip install -r requirements.txt
 ```
 
-### Useful flags
+---
 
-- `--csv`: choose a different embeddings file (default: `dataset/formated_chunks_and_embedding.csv`)
-- `--top-k`: number of chunks to return
-- `--min-score`: only return matches above this cosine score
-- `--openai-model`: embedding model for `--query` (default: `text-embedding-3-small`)
+## 🔑 HuggingFace Authentication
+
+LLaMA-3 requires access approval. Login before running:
+
+### Python
+```python
+from huggingface_hub import login
+login()
+```
+
+### CLI
+```bash
+huggingface-cli login
+```
+
+---
+
+## ▶️ Run the Application
+
+```bash
+python chat_bot.py
+```
+
+Gradio will launch a local interface.
+
+---
+
+## 🏗 How Retrieval Works
+
+1. Query embedding is computed.
+2. Cosine similarity is calculated against category centroids.
+3. Top **N** categories are selected.
+4. Chunk-level similarity is computed within selected categories.
+5. Top-*k* results per category are passed to the LLM.
+
+This two-stage retrieval improves precision and reduces noise.
+
+---
+
+## 🛠 Technologies Used
+
+- Python
+- Pandas
+- NumPy
+- Scikit-learn
+- SentenceTransformers
+- Meta LLaMA-3-8B-Instruct
+- HuggingFace Transformers
+- Gradio
+
+---
+
+## 📌 Features
+
+- ✔ Category-aware semantic filtering
+- ✔ Multi-turn conversational memory
+- ✔ Context-restricted answering
+- ✔ Modular retrieval pipeline
+- ✔ GPU-compatible
+
+---
+
+## 🚧 Future Improvements
+
+- FAISS-based vector indexing
+- Hybrid keyword + semantic retrieval
+- Intent detection layer
+- Structured timetable rendering
+- Deployment to HuggingFace Spaces
+
+---
+
+## 👨‍💻 Author
+
+Developed by **Saran S**  
+Focused on building practical, scalable RAG systems.
