@@ -26,7 +26,7 @@ The system:
 - **Embedding model:** `all-mpnet-base-v2`
 - Category-level centroid similarity filtering
 - Chunk-level cosine similarity scoring
-- Top-*k* results per category
+- Top-*5* results per category
 
 ### 🤖 Generation Layer
 - **Model:** `meta-llama/Meta-Llama-3-8B-Instruct`
@@ -100,9 +100,9 @@ Gradio will launch a local interface.
 
 1. Query embedding is computed.
 2. Cosine similarity is calculated against category centroids.
-3. Top **N** categories are selected.
+3. Top **2** categories are selected.
 4. Chunk-level similarity is computed within selected categories.
-5. Top-*k* results per category are passed to the LLM.
+5. Top-*5* results per category are passed to the LLM.
 
 This two-stage retrieval improves precision and reduces noise.
 
@@ -143,5 +143,5 @@ This two-stage retrieval improves precision and reduces noise.
 
 ## 👨‍💻 Author
 
-Developed by **Saran S**  
+Developed by **Sanjay S**  
 Focused on building practical, scalable RAG systems.
